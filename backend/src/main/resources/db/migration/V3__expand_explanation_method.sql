@@ -1,0 +1,2 @@
+ALTER TABLE explanation
+    ALTER COLUMN method SET DATA TYPE VARCHAR(128);

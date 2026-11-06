@@ -1,0 +1,30 @@
+{
+  "anomaly_model": "anomaly_model.joblib",
+  "dataset_sha256": "e2c8567840c75d1bb5fa7bfdbd927e414d501d422ae8c61d702b029464fc1e1e",
+  "evaluation_file": "evaluation.json",
+  "feature_columns": [
+    "request_rate",
+    "error_rate",
+    "p95_latency_seconds",
+    "request_rate_lag_1",
+    "error_rate_lag_1",
+    "p95_latency_seconds_lag_1",
+    "request_rate_mean_5",
+    "error_rate_mean_5",
+    "p95_latency_seconds_mean_5",
+    "request_rate_std_5",
+    "error_rate_std_5",
+    "p95_latency_seconds_std_5"
+  ],
+  "forecast_degradation_latency_threshold_seconds": 1.0,
+  "forecast_horizon_minutes": 5,
+  "forecast_model": "forecast_model.joblib",
+  "forecast_operational_probability_threshold": 0.5,
+  "isolation_score_threshold": 0.011880161319263841,
+  "model_version": "aexa-phase3-2026.10.26",
+  "python": "3.13.3",
+  "scikit_learn": "1.6.1",
+  "seed": 20261026,
+  "trained_at": "2026-10-26T16:20:38.175652+00:00",
+  "training_source": "synthetic demo telemetry; not production data"
+}

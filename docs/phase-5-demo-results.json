@@ -1,0 +1,359 @@
+{
+    "generated_at_utc":  "2026-10-27T11:31:04.9382376Z",
+    "environment":  "Local Docker Compose demonstration; synthetic workload",
+    "status":  "COMPLETED",
+    "failure":  null,
+    "scenarios":  [
+                      {
+                          "scenario":  "normal",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  200,
+                          "latency_ms":  2096.42,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "latency-spike",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  200,
+                          "latency_ms":  1583.44,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "dependency-failure",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  502,
+                          "latency_ms":  47.16,
+                          "detail":  ": Downstream service returned 502"
+                      },
+                      {
+                          "scenario":  "bounded-resource-pressure",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  200,
+                          "latency_ms":  84.96,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "error-burst",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  503,
+                          "latency_ms":  3.33,
+                          "detail":  ": Controlled demo failure"
+                      },
+                      {
+                          "scenario":  "error-burst",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  503,
+                          "latency_ms":  3.01,
+                          "detail":  ": Controlled demo failure"
+                      },
+                      {
+                          "scenario":  "error-burst",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  503,
+                          "latency_ms":  3.2,
+                          "detail":  ": Controlled demo failure"
+                      },
+                      {
+                          "scenario":  "error-burst",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  503,
+                          "latency_ms":  2.8,
+                          "detail":  ": Controlled demo failure"
+                      },
+                      {
+                          "scenario":  "error-burst",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  503,
+                          "latency_ms":  2.91,
+                          "detail":  ": Controlled demo failure"
+                      },
+                      {
+                          "scenario":  "recovery",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  200,
+                          "latency_ms":  71.76,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "telemetry-metrics",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/metrics?serviceName=checkout-api\u0026lookbackMinutes=60",
+                          "status":  200,
+                          "latency_ms":  31.15,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "telemetry-logs",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/logs?serviceName=checkout-api\u0026lookbackMinutes=60\u0026limit=100",
+                          "status":  200,
+                          "latency_ms":  47.69,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "telemetry-traces",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/traces?serviceName=checkout-api\u0026lookbackMinutes=60\u0026limit=20",
+                          "status":  200,
+                          "latency_ms":  193.2,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "telemetry-metrics",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/metrics?serviceName=inventory-api\u0026lookbackMinutes=60",
+                          "status":  200,
+                          "latency_ms":  25.64,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "telemetry-logs",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/logs?serviceName=inventory-api\u0026lookbackMinutes=60\u0026limit=100",
+                          "status":  200,
+                          "latency_ms":  41.22,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "telemetry-traces",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/traces?serviceName=inventory-api\u0026lookbackMinutes=60\u0026limit=20",
+                          "status":  200,
+                          "latency_ms":  56.2,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "telemetry-metrics",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/metrics?serviceName=pricing-api\u0026lookbackMinutes=60",
+                          "status":  200,
+                          "latency_ms":  28.99,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "telemetry-logs",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/logs?serviceName=pricing-api\u0026lookbackMinutes=60\u0026limit=100",
+                          "status":  200,
+                          "latency_ms":  89.2,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "telemetry-traces",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/traces?serviceName=pricing-api\u0026lookbackMinutes=60\u0026limit=20",
+                          "status":  200,
+                          "latency_ms":  74.32,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "analysis-anomalies",
+                          "method":  "POST",
+                          "url":  "http://localhost:8080/api/v1/analysis/anomalies/run?serviceName=checkout-api\u0026lookbackMinutes=60",
+                          "status":  200,
+                          "latency_ms":  271.54,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "analysis-forecasts",
+                          "method":  "POST",
+                          "url":  "http://localhost:8080/api/v1/analysis/forecasts/run?serviceName=checkout-api\u0026lookbackMinutes=60",
+                          "status":  200,
+                          "latency_ms":  337.83,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "history-anomalies",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/analysis/anomalies?serviceName=checkout-api\u0026limit=10",
+                          "status":  200,
+                          "latency_ms":  15.12,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "history-forecasts",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/analysis/forecasts?serviceName=checkout-api\u0026limit=10",
+                          "status":  200,
+                          "latency_ms":  19.12,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "catalog",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/services",
+                          "status":  200,
+                          "latency_ms":  29.55,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "rca-metrics",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/metrics?serviceName=checkout-api\u0026lookbackMinutes=60",
+                          "status":  200,
+                          "latency_ms":  43.45,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "rca-logs",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/logs?serviceName=checkout-api\u0026lookbackMinutes=60\u0026limit=100",
+                          "status":  200,
+                          "latency_ms":  45.36,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "rca-traces",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/traces?serviceName=checkout-api\u0026lookbackMinutes=60\u0026limit=20",
+                          "status":  200,
+                          "latency_ms":  106.44,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "rca-metrics",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/metrics?serviceName=inventory-api\u0026lookbackMinutes=60",
+                          "status":  200,
+                          "latency_ms":  32.92,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "rca-logs",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/logs?serviceName=inventory-api\u0026lookbackMinutes=60\u0026limit=100",
+                          "status":  200,
+                          "latency_ms":  43.33,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "rca-traces",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/traces?serviceName=inventory-api\u0026lookbackMinutes=60\u0026limit=20",
+                          "status":  200,
+                          "latency_ms":  65.19,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "rca-metrics",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/metrics?serviceName=pricing-api\u0026lookbackMinutes=60",
+                          "status":  200,
+                          "latency_ms":  37.96,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "rca-logs",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/logs?serviceName=pricing-api\u0026lookbackMinutes=60\u0026limit=100",
+                          "status":  200,
+                          "latency_ms":  35.76,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "rca-traces",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/traces?serviceName=pricing-api\u0026lookbackMinutes=60\u0026limit=20",
+                          "status":  200,
+                          "latency_ms":  125.54,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "analysis-root-causes",
+                          "method":  "POST",
+                          "url":  "http://localhost:8080/api/v1/ai/root-causes/rank",
+                          "status":  200,
+                          "latency_ms":  77.06,
+                          "detail":  null
+                      }
+                  ],
+    "api_latency_ms":  {
+                           "p50":  43.45,
+                           "sample_count":  34,
+                           "p95":  1583.44
+                       },
+    "bounded_concurrency_probe":  {
+                                      "observed_requests_per_second":  3.94,
+                                      "request_count":  8,
+                                      "elapsed_seconds":  2.03,
+                                      "status_codes":  [
+                                                           200,
+                                                           200,
+                                                           200,
+                                                           200,
+                                                           200,
+                                                           200,
+                                                           200,
+                                                           200
+                                                       ],
+                                      "note":  "Bounded local concurrency only; not a CPU or memory saturation test."
+                                  },
+    "analyses":  {
+                     "anomaly_history_count":  10,
+                     "checkout_evidence_counts":  {
+                                                      "logs":  100,
+                                                      "traces":  250,
+                                                      "metrics":  32
+                                                  },
+                     "forecast_history_count":  4,
+                     "root_cause_candidate_count":  3,
+                     "forecast_persisted":  true,
+                     "root_cause_causality_confirmed":  false,
+                     "normal_anomaly_and_forecast_status":  "Both model-run endpoints must return HTTP 200 after collecting at least six measured samples.",
+                     "telemetry_sources":  [
+                                               "Prometheus",
+                                               "Loki",
+                                               "Jaeger"
+                                           ],
+                     "anomaly_persisted_count":  2
+                 },
+    "docker_resource_snapshots":  {
+                                      "before":  [
+                                                     "infra-traffic-generator-1|0.57%|26.61MiB / 128MiB",
+                                                     "infra-checkout-api-1|1.65%|56.86MiB / 128MiB",
+                                                     "infra-inventory-api-1|2.19%|66.32MiB / 128MiB",
+                                                     "aexa-prometheus|0.01%|46.95MiB / 512MiB",
+                                                     "infra-pricing-api-1|2.00%|52.09MiB / 128MiB",
+                                                     "aexa-otel-collector|1.30%|85.67MiB / 256MiB",
+                                                     "aexa-kafka|3.17%|542.8MiB / 768MiB",
+                                                     "aexa-loki|0.64%|109MiB / 512MiB",
+                                                     "aexa-postgres|0.00%|40.32MiB / 512MiB",
+                                                     "aexa-jaeger|0.02%|43.21MiB / 512MiB",
+                                                     "infra-ml-service-1|0.18%|147.2MiB / 1GiB",
+                                                     "infra-frontend-1|0.00%|11.49MiB / 128MiB",
+                                                     "infra-backend-1|0.16%|328.8MiB / 768MiB"
+                                                 ],
+                                      "limitation":  "Instantaneous docker stats snapshots, not peak or attributable resource overhead.",
+                                      "after":  [
+                                                    "infra-traffic-generator-1|0.27%|26.61MiB / 128MiB",
+                                                    "infra-checkout-api-1|1.74%|60.83MiB / 128MiB",
+                                                    "infra-inventory-api-1|1.72%|60.35MiB / 128MiB",
+                                                    "aexa-prometheus|2.31%|49.32MiB / 512MiB",
+                                                    "infra-pricing-api-1|0.69%|52.21MiB / 128MiB",
+                                                    "aexa-otel-collector|3.96%|87.81MiB / 256MiB",
+                                                    "aexa-kafka|2.79%|543.4MiB / 768MiB",
+                                                    "aexa-loki|0.77%|113.7MiB / 512MiB",
+                                                    "aexa-postgres|0.02%|40.51MiB / 512MiB",
+                                                    "aexa-jaeger|2.61%|50.96MiB / 512MiB",
+                                                    "infra-ml-service-1|0.19%|147.2MiB / 1GiB",
+                                                    "infra-frontend-1|0.07%|11.5MiB / 128MiB",
+                                                    "infra-backend-1|8.69%|332.6MiB / 768MiB"
+                                                ]
+                                  },
+    "elapsed_seconds":  19.59,
+    "limitations":  [
+                        "Traffic and injected faults are synthetic.",
+                        "Resource pressure is a bounded 20 ms CPU workload per request in the local demo service, not host-wide saturation.",
+                        "This script records endpoint measurements; model metrics remain the held-out synthetic results documented in phase-3-evaluation.md."
+                    ]
+}

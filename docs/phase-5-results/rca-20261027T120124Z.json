@@ -1,0 +1,104 @@
+{
+  "baseline": "Dependency/log/temporal-blind ranking by maximum absolute relative metric deviation.",
+  "evaluation": "synthetic_known_cause_rca",
+  "generated_at_utc": "2026-10-27T12:01:24.880855+00:00",
+  "limitations": [
+    "The scenarios are generated telemetry fixtures with explicit labels; they do not inject faults into running services.",
+    "The dataset contains four hand-constructed cases and is too small to support generalization or uncertainty claims.",
+    "CPU/memory pressure is represented by latency/error telemetry rather than measured resource saturation.",
+    "The implemented ranking remains observational and does not establish causality."
+  ],
+  "method": "Production rank_root_causes implementation; no parameter tuning on these scenarios.",
+  "metrics": {
+    "implemented_rca": {
+      "k": 3,
+      "mean_reciprocal_rank": 0.7083333333333334,
+      "recall_at_k": 1.0,
+      "scenario_count": 4,
+      "top1_accuracy": 0.5
+    },
+    "metric_only_baseline": {
+      "k": 3,
+      "mean_reciprocal_rank": 0.875,
+      "recall_at_k": 1.0,
+      "scenario_count": 4,
+      "top1_accuracy": 0.75
+    }
+  },
+  "scenarios": [
+    {
+      "causality_confirmed": false,
+      "ground_truth_cause": "database",
+      "metric_only_ground_truth_rank": 1,
+      "metric_only_ranked_services": [
+        "database",
+        "inventory-api",
+        "pricing-api",
+        "checkout-api"
+      ],
+      "rca_ground_truth_rank": 3,
+      "rca_ranked_services": [
+        "pricing-api",
+        "inventory-api",
+        "database",
+        "checkout-api"
+      ],
+      "scenario": "database_latency",
+      "scenario_type": "synthetic controlled telemetry; not live fault injection"
+    },
+    {
+      "causality_confirmed": false,
+      "ground_truth_cause": "inventory-api",
+      "metric_only_ground_truth_rank": 1,
+      "metric_only_ranked_services": [
+        "inventory-api",
+        "checkout-api",
+        "database",
+        "pricing-api"
+      ],
+      "rca_ground_truth_rank": 2,
+      "rca_ranked_services": [
+        "checkout-api",
+        "inventory-api"
+      ],
+      "scenario": "downstream_service_failure",
+      "scenario_type": "synthetic controlled telemetry; not live fault injection"
+    },
+    {
+      "causality_confirmed": false,
+      "ground_truth_cause": "checkout-api",
+      "metric_only_ground_truth_rank": 1,
+      "metric_only_ranked_services": [
+        "checkout-api",
+        "database",
+        "inventory-api",
+        "pricing-api"
+      ],
+      "rca_ground_truth_rank": 1,
+      "rca_ranked_services": [
+        "checkout-api"
+      ],
+      "scenario": "cpu_memory_pressure_proxy",
+      "scenario_type": "synthetic controlled telemetry; not live fault injection"
+    },
+    {
+      "causality_confirmed": false,
+      "ground_truth_cause": "pricing-api",
+      "metric_only_ground_truth_rank": 2,
+      "metric_only_ranked_services": [
+        "checkout-api",
+        "pricing-api",
+        "inventory-api",
+        "database"
+      ],
+      "rca_ground_truth_rank": 1,
+      "rca_ranked_services": [
+        "pricing-api",
+        "inventory-api",
+        "checkout-api"
+      ],
+      "scenario": "network_dependency_latency",
+      "scenario_type": "synthetic controlled telemetry; not live fault injection"
+    }
+  ]
+}

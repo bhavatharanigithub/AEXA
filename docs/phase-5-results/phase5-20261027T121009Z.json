@@ -1,0 +1,290 @@
+{
+    "generated_at_utc":  "2026-10-27T12:10:56.1514175Z",
+    "run_id":  "20261027T121056Z",
+    "environment":  "Local Docker Compose demonstration; synthetic workload",
+    "persistence_check":  {
+                              "performed":  true,
+                              "status":  "NOT_RUN"
+                          },
+    "status":  "FAILED",
+    "failure":  " Container aexa-postgres Restarting ",
+    "scenarios":  [
+                      {
+                          "scenario":  "normal",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  200,
+                          "latency_ms":  2460.32,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "latency-spike",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  200,
+                          "latency_ms":  1610.34,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "dependency-failure",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  502,
+                          "latency_ms":  390.87,
+                          "detail":  ": Downstream service returned 502"
+                      },
+                      {
+                          "scenario":  "bounded-resource-pressure",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  200,
+                          "latency_ms":  651.58,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "error-burst",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  503,
+                          "latency_ms":  193.74,
+                          "detail":  ": Controlled demo failure"
+                      },
+                      {
+                          "scenario":  "error-burst",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  503,
+                          "latency_ms":  7.56,
+                          "detail":  ": Controlled demo failure"
+                      },
+                      {
+                          "scenario":  "error-burst",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  503,
+                          "latency_ms":  42.88,
+                          "detail":  ": Controlled demo failure"
+                      },
+                      {
+                          "scenario":  "error-burst",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  503,
+                          "latency_ms":  8.23,
+                          "detail":  ": Controlled demo failure"
+                      },
+                      {
+                          "scenario":  "error-burst",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  503,
+                          "latency_ms":  83.93,
+                          "detail":  ": Controlled demo failure"
+                      },
+                      {
+                          "scenario":  "recovery",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  200,
+                          "latency_ms":  392.18,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "telemetry-metrics",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/metrics?serviceName=checkout-api\u0026lookbackMinutes=60",
+                          "status":  200,
+                          "latency_ms":  454.99,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "telemetry-logs",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/logs?serviceName=checkout-api\u0026lookbackMinutes=60\u0026limit=100",
+                          "status":  200,
+                          "latency_ms":  191.19,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "telemetry-traces",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/traces?serviceName=checkout-api\u0026lookbackMinutes=60\u0026limit=20",
+                          "status":  200,
+                          "latency_ms":  2403.37,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "telemetry-metrics",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/metrics?serviceName=inventory-api\u0026lookbackMinutes=60",
+                          "status":  200,
+                          "latency_ms":  168.34,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "telemetry-logs",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/logs?serviceName=inventory-api\u0026lookbackMinutes=60\u0026limit=100",
+                          "status":  200,
+                          "latency_ms":  199.44,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "telemetry-traces",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/traces?serviceName=inventory-api\u0026lookbackMinutes=60\u0026limit=20",
+                          "status":  200,
+                          "latency_ms":  1734.41,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "telemetry-metrics",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/metrics?serviceName=pricing-api\u0026lookbackMinutes=60",
+                          "status":  200,
+                          "latency_ms":  119.11,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "telemetry-logs",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/logs?serviceName=pricing-api\u0026lookbackMinutes=60\u0026limit=100",
+                          "status":  200,
+                          "latency_ms":  92.57,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "telemetry-traces",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/telemetry/traces?serviceName=pricing-api\u0026lookbackMinutes=60\u0026limit=20",
+                          "status":  200,
+                          "latency_ms":  971.24,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "analysis-anomalies",
+                          "method":  "POST",
+                          "url":  "http://localhost:8080/api/v1/analysis/anomalies/run?serviceName=checkout-api\u0026lookbackMinutes=60",
+                          "status":  200,
+                          "latency_ms":  900.1,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "analysis-forecasts",
+                          "method":  "POST",
+                          "url":  "http://localhost:8080/api/v1/analysis/forecasts/run?serviceName=checkout-api\u0026lookbackMinutes=60",
+                          "status":  200,
+                          "latency_ms":  511.28,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "history-anomalies",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/analysis/anomalies?serviceName=checkout-api\u0026limit=10",
+                          "status":  200,
+                          "latency_ms":  30.39,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "history-forecasts",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/analysis/forecasts?serviceName=checkout-api\u0026limit=10",
+                          "status":  200,
+                          "latency_ms":  27.72,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "adaptive-enable",
+                          "method":  "PUT",
+                          "url":  "http://localhost:8080/api/v1/adaptive/enabled",
+                          "status":  200,
+                          "latency_ms":  902.51,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "adaptive-disable",
+                          "method":  "PUT",
+                          "url":  "http://localhost:8080/api/v1/adaptive/enabled",
+                          "status":  200,
+                          "latency_ms":  649.14,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "adaptive-audit",
+                          "method":  "GET",
+                          "url":  "http://localhost:8080/api/v1/adaptive/audit?limit=100",
+                          "status":  200,
+                          "latency_ms":  42.94,
+                          "detail":  null
+                      }
+                  ],
+    "api_latency_ms":  {
+                           "p50":  199.44,
+                           "sample_count":  26,
+                           "p95":  2403.37
+                       },
+    "bounded_concurrency_probe":  {
+                                      "observed_requests_per_second":  1.49,
+                                      "request_count":  8,
+                                      "elapsed_seconds":  5.38,
+                                      "status_codes":  [
+                                                           200,
+                                                           200,
+                                                           200,
+                                                           200,
+                                                           200,
+                                                           200,
+                                                           200,
+                                                           200
+                                                       ],
+                                      "note":  "Bounded local concurrency only; not a CPU or memory saturation test."
+                                  },
+    "analyses":  {
+                     "anomaly_history_count":  10,
+                     "checkout_evidence_counts":  {
+                                                      "logs":  100,
+                                                      "traces":  176,
+                                                      "metrics":  61
+                                                  },
+                     "forecast_history_count":  6,
+                     "root_cause_candidate_count":  null,
+                     "forecast_persisted":  true,
+                     "root_cause_causality_confirmed":  null,
+                     "normal_anomaly_and_forecast_status":  "Both model-run endpoints must return HTTP 200 after collecting at least six measured samples.",
+                     "telemetry_sources":  [
+                                               "Prometheus",
+                                               "Loki",
+                                               "Jaeger"
+                                           ],
+                     "anomaly_persisted_count":  2
+                 },
+    "docker_resource_snapshots":  {
+                                      "before":  [
+                                                     "infra-backend-1|0.19%|293MiB / 768MiB",
+                                                     "infra-checkout-api-1|3.77%|67.33MiB / 128MiB",
+                                                     "infra-inventory-api-1|6.79%|67.84MiB / 128MiB",
+                                                     "infra-pricing-api-1|3.38%|54.78MiB / 128MiB",
+                                                     "infra-traffic-generator-1|0.21%|26.49MiB / 128MiB",
+                                                     "aexa-prometheus|0.02%|59.49MiB / 512MiB",
+                                                     "aexa-otel-collector|6.20%|90.21MiB / 256MiB",
+                                                     "aexa-kafka|4.77%|490MiB / 768MiB",
+                                                     "aexa-loki|5.79%|142.7MiB / 512MiB",
+                                                     "aexa-postgres|11.94%|49.26MiB / 512MiB",
+                                                     "aexa-jaeger|0.01%|184.8MiB / 512MiB",
+                                                     "infra-ml-service-1|0.33%|141.4MiB / 1GiB",
+                                                     "infra-frontend-1|0.00%|9.672MiB / 128MiB"
+                                                 ],
+                                      "limitation":  "Instantaneous docker stats snapshots, not peak or attributable resource overhead.",
+                                      "after":  [
+
+                                                ]
+                                  },
+    "elapsed_seconds":  46.7,
+    "limitations":  [
+                        "Traffic and injected faults are synthetic.",
+                        "Resource pressure is a bounded 20 ms CPU workload per request in the local demo service, not host-wide saturation.",
+                        "Docker stats are instantaneous snapshots and do not measure peak or attributable adaptive overhead.",
+                        "This script\u0027s PostgreSQL/backend restart test verifies persistence for analysis history, adaptive audit, and sampler-state rows; it does not validate multi-node failover.",
+                        "Model metrics remain the held-out synthetic results documented in phase-3-evaluation.md."
+                    ]
+}

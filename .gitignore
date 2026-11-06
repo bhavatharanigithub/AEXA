@@ -1,0 +1,57 @@
+# Build
+**/target/
+**/dist/
+**/build/
+**/.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Node
+**/node_modules/
+**/.vite/
+**/coverage/
+
+# Python
+**/.venv/
+**/venv/
+**/__pycache__/
+**/*.pyc
+**/.pytest_cache/
+**/.mypy_cache/
+ml-service/artifacts/*.joblib
+
+# IDE
+.idea/
+.vscode/
+*.iml
+.project
+.classpath
+.settings/
+
+# Env and secrets
+.env
+.env.local
+*.pem
+*.p12
+*.jks
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Logs and temp
+*.log
+logs/
+tmp/
+.temp/
+
+# H2 local files
+*.mv.db
+*.trace.db
+backend/data/
+
+# Test / coverage
+**/jacoco.exec
+htmlcov/
+.coverage

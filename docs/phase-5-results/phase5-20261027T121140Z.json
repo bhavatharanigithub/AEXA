@@ -1,0 +1,162 @@
+{
+    "generated_at_utc":  "2026-10-27T12:12:14.7255908Z",
+    "run_id":  "20261027T121214Z",
+    "environment":  "Local Docker Compose demonstration; synthetic workload",
+    "persistence_check":  {
+                              "status":  "NOT_RUN",
+                              "performed":  false
+                          },
+    "status":  "FAILED",
+    "failure":  "Bounded concurrent probe had non-200 results: 200,500,500,500,500,500,500,500.",
+    "scenarios":  [
+                      {
+                          "scenario":  "normal",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  200,
+                          "latency_ms":  3283.19,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "latency-spike",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  200,
+                          "latency_ms":  2596.85,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "dependency-failure",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  502,
+                          "latency_ms":  3502.8,
+                          "detail":  ": Downstream service returned 502"
+                      },
+                      {
+                          "scenario":  "bounded-resource-pressure",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  200,
+                          "latency_ms":  1216.66,
+                          "detail":  null
+                      },
+                      {
+                          "scenario":  "error-burst",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  503,
+                          "latency_ms":  92.19,
+                          "detail":  ": Controlled demo failure"
+                      },
+                      {
+                          "scenario":  "error-burst",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  503,
+                          "latency_ms":  5.31,
+                          "detail":  ": Controlled demo failure"
+                      },
+                      {
+                          "scenario":  "error-burst",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  503,
+                          "latency_ms":  61.04,
+                          "detail":  ": Controlled demo failure"
+                      },
+                      {
+                          "scenario":  "error-burst",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  503,
+                          "latency_ms":  9.72,
+                          "detail":  ": Controlled demo failure"
+                      },
+                      {
+                          "scenario":  "error-burst",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  503,
+                          "latency_ms":  5.56,
+                          "detail":  ": Controlled demo failure"
+                      },
+                      {
+                          "scenario":  "recovery",
+                          "method":  "GET",
+                          "url":  "http://localhost:8081/work",
+                          "status":  200,
+                          "latency_ms":  1589.64,
+                          "detail":  null
+                      }
+                  ],
+    "api_latency_ms":  {
+                           "p50":  92.19,
+                           "sample_count":  10,
+                           "p95":  3502.8
+                       },
+    "bounded_concurrency_probe":  {
+                                      "observed_requests_per_second":  0.68,
+                                      "request_count":  8,
+                                      "elapsed_seconds":  11.715,
+                                      "status_codes":  [
+                                                           200,
+                                                           500,
+                                                           500,
+                                                           500,
+                                                           500,
+                                                           500,
+                                                           500,
+                                                           500
+                                                       ],
+                                      "note":  "Bounded local concurrency only; not a CPU or memory saturation test."
+                                  },
+    "analyses":  {
+                     "anomaly_history_count":  null,
+                     "checkout_evidence_counts":  {
+                                                      "logs":  1,
+                                                      "traces":  1,
+                                                      "metrics":  1
+                                                  },
+                     "forecast_history_count":  null,
+                     "root_cause_candidate_count":  null,
+                     "forecast_persisted":  null,
+                     "root_cause_causality_confirmed":  null,
+                     "normal_anomaly_and_forecast_status":  "Both model-run endpoints must return HTTP 200 after collecting at least six measured samples.",
+                     "telemetry_sources":  [
+                                               "Prometheus",
+                                               "Loki",
+                                               "Jaeger"
+                                           ],
+                     "anomaly_persisted_count":  null
+                 },
+    "docker_resource_snapshots":  {
+                                      "before":  [
+                                                     "infra-backend-1|16.86%|296.6MiB / 768MiB",
+                                                     "infra-checkout-api-1|1.21%|63.01MiB / 128MiB",
+                                                     "infra-inventory-api-1|0.78%|72.09MiB / 128MiB",
+                                                     "infra-pricing-api-1|23.93%|63.53MiB / 128MiB",
+                                                     "infra-traffic-generator-1|0.00%|26.27MiB / 128MiB",
+                                                     "aexa-prometheus|0.02%|61.18MiB / 512MiB",
+                                                     "aexa-otel-collector|1.49%|90.05MiB / 256MiB",
+                                                     "aexa-kafka|4.45%|492.9MiB / 768MiB",
+                                                     "aexa-loki|2.99%|145.7MiB / 512MiB",
+                                                     "aexa-postgres|0.10%|39.28MiB / 512MiB",
+                                                     "aexa-jaeger|0.04%|206.2MiB / 512MiB",
+                                                     "infra-ml-service-1|0.46%|140.5MiB / 1GiB",
+                                                     "infra-frontend-1|0.00%|9.59MiB / 128MiB"
+                                                 ],
+                                      "limitation":  "Instantaneous docker stats snapshots, not peak or attributable resource overhead.",
+                                      "after":  [
+
+                                                ]
+                                  },
+    "elapsed_seconds":  34.3,
+    "limitations":  [
+                        "Traffic and injected faults are synthetic.",
+                        "Resource pressure is a bounded 20 ms CPU workload per request in the local demo service, not host-wide saturation.",
+                        "Docker stats are instantaneous snapshots and do not measure peak or attributable adaptive overhead.",
+                        "This script\u0027s PostgreSQL/backend restart test verifies persistence for analysis history, adaptive audit, and sampler-state rows; it does not validate multi-node failover.",
+                        "Model metrics remain the held-out synthetic results documented in phase-3-evaluation.md."
+                    ]
+}

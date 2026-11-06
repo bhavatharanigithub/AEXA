@@ -1,0 +1,74 @@
+spring:
+  application:
+    name: aexa-backend
+  profiles:
+    active: ${AEXA_PROFILE:local}
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+
+server:
+  port: ${SERVER_PORT:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: aexa-backend
+    version: 0.1.0
+    phase: 5
+
+aexa:
+  jwt:
+    secret: ${AEXA_JWT_SECRET:local-dev-only-change-me-use-32-plus-chars}
+    expiry-minutes: ${AEXA_JWT_EXPIRY_MINUTES:480}
+  bootstrap:
+    admin-username: ${AEXA_ADMIN_USERNAME:admin}
+    admin-password: ${AEXA_ADMIN_PASSWORD:admin-change-me}
+    analyst-username: ${AEXA_ANALYST_USERNAME:analyst}
+    analyst-password: ${AEXA_ANALYST_PASSWORD:analyst-change-me}
+    seed-catalog: ${AEXA_SEED_CATALOG:true}
+  telemetry:
+    prometheus-url: ${PROMETHEUS_URL:http://localhost:9090}
+  traces:
+    jaeger-url: ${JAEGER_URL:http://localhost:16686}
+  logs:
+    loki-url: ${LOKI_URL:http://localhost:3100}
+  ai:
+    service-url: ${ML_SERVICE_URL:http://localhost:8090}
+    timeout-seconds: ${ML_SERVICE_TIMEOUT_SECONDS:10}
+  adaptive:
+    evaluation-interval-millis: ${AEXA_ADAPTIVE_EVALUATION_INTERVAL_MILLIS:15000}
+    cooldown-seconds: ${AEXA_ADAPTIVE_COOLDOWN_SECONDS:60}
+    stale-after-seconds: ${AEXA_ADAPTIVE_STALE_AFTER_SECONDS:45}
+    max-changes-per-hour: ${AEXA_ADAPTIVE_MAX_CHANGES_PER_HOUR:12}
+    demo-service-urls:
+      checkout-api: ${AEXA_DEMO_CHECKOUT_URL:http://localhost:8081}
+      inventory-api: ${AEXA_DEMO_INVENTORY_URL:http://localhost:8082}
+      pricing-api: ${AEXA_DEMO_PRICING_URL:http://localhost:8083}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html

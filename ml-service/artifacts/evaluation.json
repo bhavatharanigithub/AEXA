@@ -1,0 +1,110 @@
+{
+  "anomaly_detection": {
+    "isolation_forest": {
+      "detection_delay": {
+        "detected_incidents": 2,
+        "mean_minutes": 0.0,
+        "median_minutes": 0.0,
+        "missed_incidents": 0,
+        "unit": "minutes"
+      },
+      "f1": 0.639344262295082,
+      "false_negatives": 0,
+      "false_positive_rate": 0.07260726072607261,
+      "false_positives": 44,
+      "method": "RobustScaler + IsolationForest; threshold is 5th percentile of normal training scores",
+      "precision": 0.46987951807228917,
+      "recall": 1.0,
+      "samples": 645,
+      "score_threshold": 0.011880161319263841,
+      "true_negatives": 562,
+      "true_positives": 39
+    },
+    "statistical_baseline": {
+      "detection_delay": {
+        "detected_incidents": 2,
+        "mean_minutes": 0.0,
+        "median_minutes": 0.0,
+        "missed_incidents": 0,
+        "unit": "minutes"
+      },
+      "f1": 0.8571428571428571,
+      "false_negatives": 9,
+      "false_positive_rate": 0.0016501650165016502,
+      "false_positives": 1,
+      "method": "past-only rolling median and MAD with per-metric absolute floors",
+      "precision": 0.967741935483871,
+      "recall": 0.7692307692307693,
+      "samples": 645,
+      "true_negatives": 605,
+      "true_positives": 30
+    }
+  },
+  "created_at": "2026-10-26T16:20:38.117943+00:00",
+  "dataset": {
+    "hash_precision": "timestamps in UTC; numeric values serialized to 9 decimal places",
+    "irregular_samples_removed": 18,
+    "missing_latency_values": 36,
+    "rows": 2142,
+    "seed": 20261026,
+    "services": [
+      "checkout-api",
+      "inventory-api",
+      "pricing-api"
+    ],
+    "sha256": "e2c8567840c75d1bb5fa7bfdbd927e414d501d422ae8c61d702b029464fc1e1e",
+    "time_end": "2026-01-01T11:59:00+00:00",
+    "time_start": "2026-01-01T00:00:00+00:00",
+    "type": "deterministic synthetic demonstration telemetry"
+  },
+  "limitations": [
+    "Evaluation is on deterministic synthetic demo data, not production incidents.",
+    "Synthetic anomaly intervals and labels do not establish real-world generalization.",
+    "The Isolation Forest ranking score is not a calibrated probability.",
+    "Forecast probabilities and local LIME contributions depend on this training distribution."
+  ],
+  "model_version": "aexa-phase3-2026.10.26",
+  "predictive_monitoring": {
+    "horizon_minutes": 5,
+    "model": "class-weighted RandomForestClassifier",
+    "operational_probability_threshold": 0.5,
+    "persistence_baseline": {
+      "f1": 0.8604651162790697,
+      "false_negatives": 10,
+      "false_positive_rate": 0.003430531732418525,
+      "false_positives": 2,
+      "precision": 0.9487179487179487,
+      "recall": 0.7872340425531915,
+      "samples": 630,
+      "true_negatives": 581,
+      "true_positives": 37
+    },
+    "random_forest": {
+      "f1": 0.8604651162790697,
+      "false_negatives": 10,
+      "false_positive_rate": 0.003430531732418525,
+      "false_positives": 2,
+      "precision": 0.9487179487179487,
+      "recall": 0.7872340425531915,
+      "samples": 630,
+      "true_negatives": 581,
+      "true_positives": 37
+    },
+    "target": "any p95 latency >= 1.0 second in the next five one-minute samples"
+  },
+  "validation": {
+    "anomaly_test_rows": 645,
+    "anomaly_training_rows": 1438,
+    "cutoff": "2026-01-01T08:23:00+00:00",
+    "forecast_boundary_gap_minutes": 5,
+    "forecast_test_rows": 630,
+    "forecast_training_rows": 1483,
+    "leakage_controls": [
+      "features use only the current and earlier measurements",
+      "missing values are forward-filled for at most two minutes; remaining values use training-fitted medians",
+      "anomaly detector is fitted on normal rows from the training period only",
+      "forecast targets look forward five minutes; the training boundary excludes the five-minute label overlap"
+    ],
+    "method": "global chronological holdout; earliest 70% train, latest 30% test"
+  }
+}

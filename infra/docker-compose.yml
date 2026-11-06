@@ -1,0 +1,355 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: aexa-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-aexa}
+      POSTGRES_USER: ${POSTGRES_USER:-aexa}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - aexa_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-aexa} -d ${POSTGRES_DB:-aexa}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 512M
+
+  kafka:
+    image: apache/kafka:3.9.1
+    container_name: aexa-kafka
+    restart: unless-stopped
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: INTERNAL://:9092,CONTROLLER://:9093,EXTERNAL://:29092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    ports:
+      - "127.0.0.1:29092:29092"
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list"]
+      interval: 15s
+      timeout: 30s
+      retries: 12
+      start_period: 45s
+    deploy:
+      resources:
+        limits:
+          cpus: "1.00"
+          memory: 768M
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.65.0
+    container_name: aexa-jaeger
+    restart: unless-stopped
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+    ports:
+      - "127.0.0.1:16686:16686"
+      - "4317:4317"
+      - "4318:4318"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:16686/api/services"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 512M
+
+  loki:
+    image: grafana/loki:3.3.2
+    container_name: aexa-loki
+    restart: unless-stopped
+    command: ["-config.file=/etc/loki/local-config.yaml"]
+    volumes:
+      - ./loki-config.yml:/etc/loki/local-config.yaml:ro
+      - aexa_loki:/loki
+    ports:
+      - "127.0.0.1:3100:3100"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:3100/ready"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 512M
+
+  prometheus:
+    image: prom/prometheus:v3.1.0
+    container_name: aexa-prometheus
+    restart: unless-stopped
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=7d"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - aexa_prometheus:/prometheus
+    ports:
+      - "127.0.0.1:9090:9090"
+    depends_on:
+      otel-collector:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:9090/-/healthy"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 512M
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.123.0
+    container_name: aexa-otel-collector
+    restart: unless-stopped
+    command: ["--config=/etc/otelcol-contrib/config.yaml"]
+    volumes:
+      - ./otel-collector-config.yml:/etc/otelcol-contrib/config.yaml:ro
+    ports:
+      - "127.0.0.1:14317:4317"
+      - "127.0.0.1:14318:4318"
+      - "127.0.0.1:13133:13133"
+      - "127.0.0.1:8889:8889"
+    depends_on:
+      kafka:
+        condition: service_healthy
+      jaeger:
+        condition: service_healthy
+      loki:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 256M
+
+  checkout-api:
+    image: aexa-demo-service:local
+    restart: unless-stopped
+    build:
+      context: ../demo-services
+    environment:
+      SERVICE_NAME: checkout-api
+      DOWNSTREAM_URL: http://inventory-api:8000
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
+      DEPLOYMENT_ENVIRONMENT: demo
+    ports:
+      - "127.0.0.1:8081:8000"
+    depends_on:
+      otel-collector:
+        condition: service_started
+      inventory-api:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=2)"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 128M
+
+  inventory-api:
+    image: aexa-demo-service:local
+    restart: unless-stopped
+    build:
+      context: ../demo-services
+    environment:
+      SERVICE_NAME: inventory-api
+      DOWNSTREAM_URL: http://pricing-api:8000
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
+      DEPLOYMENT_ENVIRONMENT: demo
+    ports:
+      - "127.0.0.1:8082:8000"
+    depends_on:
+      otel-collector:
+        condition: service_started
+      pricing-api:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=2)"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 128M
+
+  pricing-api:
+    image: aexa-demo-service:local
+    restart: unless-stopped
+    build:
+      context: ../demo-services
+    environment:
+      SERVICE_NAME: pricing-api
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
+      DEPLOYMENT_ENVIRONMENT: demo
+    ports:
+      - "127.0.0.1:8083:8000"
+    depends_on:
+      otel-collector:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=2)"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 128M
+
+  traffic-generator:
+    image: aexa-demo-service:local
+    build:
+      context: ../demo-services
+    command: ["python", "-m", "app.traffic"]
+    environment:
+      TRAFFIC_TARGET: http://checkout-api:8000/work
+    depends_on:
+      checkout-api:
+        condition: service_healthy
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 128M
+
+  ml-service:
+    image: aexa-ml-service:local
+    build:
+      context: ../ml-service
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      AEXA_MODEL_DIR: /app/artifacts
+    ports:
+      - "127.0.0.1:8090:8000"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import json, urllib.request; response = urllib.request.urlopen('http://localhost:8000/health', timeout=3); assert json.load(response)['modelStatus'] == 'ready'"
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: "1.00"
+          memory: 1G
+
+  backend:
+    image: aexa-backend:local
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      AEXA_PROFILE: postgres
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+      POSTGRES_DB: ${POSTGRES_DB:-aexa}
+      POSTGRES_USER: ${POSTGRES_USER:-aexa}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+      AEXA_JWT_SECRET: ${AEXA_JWT_SECRET:-local-dev-only-change-me-use-32-plus-chars}
+      AEXA_ADMIN_USERNAME: ${AEXA_ADMIN_USERNAME:-admin}
+      AEXA_ADMIN_PASSWORD: ${AEXA_ADMIN_PASSWORD:-admin-change-me}
+      AEXA_ANALYST_USERNAME: ${AEXA_ANALYST_USERNAME:-analyst}
+      AEXA_ANALYST_PASSWORD: ${AEXA_ANALYST_PASSWORD:-analyst-change-me}
+      PROMETHEUS_URL: http://prometheus:9090
+      JAEGER_URL: http://jaeger:16686
+      LOKI_URL: http://loki:3100
+      ML_SERVICE_URL: http://ml-service:8000
+      AEXA_DEMO_CHECKOUT_URL: http://checkout-api:8000
+      AEXA_DEMO_INVENTORY_URL: http://inventory-api:8000
+      AEXA_DEMO_PRICING_URL: http://pricing-api:8000
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      prometheus:
+        condition: service_healthy
+      loki:
+        condition: service_healthy
+      jaeger:
+        condition: service_healthy
+      ml-service:
+        condition: service_healthy
+      checkout-api:
+        condition: service_healthy
+      inventory-api:
+        condition: service_healthy
+      pricing-api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/actuator/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+
+  frontend:
+    image: aexa-frontend:local
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5173:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1/"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+
+volumes:
+  aexa_pg:
+  aexa_loki:
+  aexa_prometheus:
