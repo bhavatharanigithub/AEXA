@@ -1,12 +1,33 @@
+# spring:
+#   datasource:
+#     url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:aexa}
+#     username: ${POSTGRES_USER:aexa}
+#     password: ${POSTGRES_PASSWORD:change-me}
+#     driver-class-name: org.postgresql.Driver
+#   jpa:
+#     database-platform: org.hibernate.dialect.PostgreSQLDialect
+#   flyway:
+#     locations: classpath:db/migration
+
+# logging:
+#   level:
+#     com.aexa: INFO
+
 spring:
   datasource:
-    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:aexa}
-    username: ${POSTGRES_USER:aexa}
-    password: ${POSTGRES_PASSWORD:change-me}
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT:5432}/${POSTGRES_DB}?sslmode=require&channelBinding=require
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
+
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
   flyway:
+    enabled: true
     locations: classpath:db/migration
 
 logging:
